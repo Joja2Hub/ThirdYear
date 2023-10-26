@@ -1,0 +1,88 @@
+a = int(input())
+b = int(input())
+l = int(input())
+N = int(input())
+len = ((2 * N - 1) + 2 * l + (2 * N * b))
+print(str(len))
+
+
+##############
+
+x1 = int(input("Input x1: "))
+y1 = int(input("Input y1: "))
+x2 = int(input("Input x2: "))
+y2 = int(input("Input y2: "))
+
+if (abs(x2 - x1) == 2 and abs(y2 - y1) == 1) or (abs(x2 - x1) == 1 and abs(y2 - y1) == 2):
+    print("Yep")
+else:
+    print("Nah")
+
+
+#############
+
+h1 = int(input("Input hours of first event: "))
+m1 = int(input("Input minutes of first event: "))
+s1 = int(input("Input seconds of first event: "))
+h2 = int(input("Input hours of second event: "))
+m2 = int(input("Input minutes of second event: "))
+s2 = int(input("Input seconds of second event: "))
+
+s1 += 60 * m1 + h1 * 3600
+s2 += 60 * m2 + h1 * 3600
+print(str(s2 - s1))
+
+################
+
+n = int(input('Input number: '))
+
+if n == 0:
+    print(1)
+else:
+    for i in range(1, n):
+        n *= i
+    print(str(n))
+
+##############
+
+s = input("Input word: ")
+half1 = s[:int((len(s) + 1) / 2)]
+half2 = s[int((len(s) + 1) / 2):]
+print(half2 + half1)
+
+##############
+a = int(input("Input first number: "))
+count = 0
+
+while a != 0:
+    b = int(input("Input next number: "))
+    if b > a:
+        count += 1
+    a = b
+print(str(count))
+
+###############
+
+
+a = [i for i in input("Input list: ").split()]
+for i in range(1, len(a)):
+    if a[i] > a[i - 1]:
+        print(a[i])
+
+##############
+
+a = int(input("Input number: "))
+n = int(input("Input its power: "))
+
+
+def power(a, n):
+    if n == 0:
+        return 1
+    else:
+        return a * power(a, n - 1)
+
+
+print(str(power(a, n)))
+
+
+##################

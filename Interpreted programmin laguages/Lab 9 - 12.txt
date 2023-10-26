@@ -1,0 +1,75 @@
+m = int(input("Введите размер матрицы: "))
+
+matrix = [[0] * m for _ in range(m)]
+
+
+def print_matrix(matrix):
+    for row in matrix:
+        for element in row:
+            print(element, end="\t")
+        print()
+
+
+def matrix_filling_alg1(matrix):
+    for i in range(m):
+        for j in range(m):
+            matrix[i][j] = abs(i - j)
+    return matrix
+
+
+def matrix_filling_alg2(matrix):
+    num = 0
+    for i in range(m ** 2):
+        for j in range(i + 1):
+            if j < m and i - j < m:
+                matrix[i - j][j] = num
+                num += 1
+    return matrix
+
+
+def matrix_filling_alg3(matrix):
+    num = 0
+    for i in range(m ** 2):
+        for j in range(i + 1):
+            if j < m and (i - j) < m:
+                matrix[j][i - j] = num
+                num += 1
+    return matrix
+
+
+matrix_filling_alg3(matrix)
+print_matrix(matrix)
+
+# (1,0) -> (0,1) -> (2,0) -> (1,1) -> (0,2) -> (3,0) -> (2,2) -> (0,3) .....
+# 1,0 = i - j, j
+
+
+______________________________________
+
+students = int(input("Сколько школьников: "))
+Lang = []
+for i in range(students):
+    Lang.append(set())
+    for j in range(int(input("Сколько языков знает школьник номер " + str(i + 1) + ": "))):
+        Lang[i].add(input("Напишите язык номер " + str(j + 1) + ": "))
+
+evr = set.intersection(*Lang)
+onlyOne = set.union(*Lang)
+
+print("Знают все : " + str(len(evr)))
+print("Список языков: " + str(evr))
+print("Знает хотя бы кто-то: " + str(len(onlyOne)))
+print("Список языков: " + str(onlyOne))
+
+
+
+______________________________________
+
+
+
+list = {}
+for i in range(int(input("Введите кол-во строк: "))):
+    line = input("Введиет слова в строке через пробел: ").split()
+    for word in line:
+        list[word] = list.get(word, 0) + 1
+
