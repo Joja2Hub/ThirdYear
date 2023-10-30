@@ -1,0 +1,94 @@
+from OpenGL.GL import *
+from OpenGL.GLUT import *
+from OpenGL.GLU import *
+
+# Углы поворота
+x_rotation = 45
+y_rotation = 45
+
+
+def initGL():
+    glClearColor(0.0, 0.0, 0.0, 1.0)
+    glClearDepth(1.0)
+    glEnable(GL_DEPTH_TEST)
+    glDepthFunc(GL_LEQUAL)
+    glShadeModel(GL_SMOOTH)
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
+    glTranslatef(0.0, 0.0, -10.0)  # Изменим значение z-координаты
+
+
+def display():
+    global x_rotation, y_rotation
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    glLoadIdentity()
+    glTranslatef(0.0, 0.0, -10.0)
+
+    glRotatef(x_rotation, 1.0, 0.0, 0.0)
+    glRotatef(y_rotation, 0.0, 1.0, 0.0)
+
+
+    #Тело гусеницы
+    glColor3f(0.0, 0.5, 0.0)
+    glTranslatef(0.25, 0.0, 0.0)
+    glutSolidSphere(1.0, 20, 20)
+
+
+    glTranslatef(0.0, -0.0, -1.5)
+    glutSolidSphere(1.0, 20, 20)
+
+    glTranslatef(0.0, 0.0, -1.5)
+    glutSolidSphere(1.0, 20, 20)
+
+    glTranslatef(0.0, 0.0, -1.5)
+    glutSolidSphere(1.0, 20, 20)
+
+    #Глазки гусеницы
+    glColor3f(2.0, 0.0, 0.0)
+    glTranslatef(0.5, 0.2, 5.4)
+    glutSolidSphere(0.25, 20, 20)
+    glTranslatef(-0.5, -0.2, -5.4)
+    glTranslatef(-0.5, 0.2, 5.4)
+    glutSolidSphere(0.25, 20, 20)
+
+
+    glutSwapBuffers()
+
+
+def reshape(width, height):
+    # Устанавливаем корректную перспективу при изменении размера окна
+    if height == 0:
+        height = 1
+
+    glViewport(0, 0, width, height)
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    gluPerspective(45, float(width) / float(height), 0.1, 100.0)
+    glMatrixMode(GL_MODELVIEW)
+
+
+def keyboard(key, x, y):
+    global x_rotation, y_rotation
+    if key == b'w':
+        x_rotation -= 15.0
+    elif key == b's':
+        x_rotation += 15.0
+    elif key == b'a':
+        y_rotation -= 15.0
+    elif key == b'd':
+        y_rotation += 15.0
+
+    glutPostRedisplay()
+
+
+glutInit()
+glutInitDisplayMode(GLUT_DOUBLE)
+glutInitWindowSize(800, 600)
+glutInitWindowPosition(0, 0)
+glutCreateWindow("Caterpillar")
+glutDisplayFunc(display)
+glutReshapeFunc(reshape)
+glutKeyboardFunc(keyboard)
+
+initGL()
+glutMainLoop()
