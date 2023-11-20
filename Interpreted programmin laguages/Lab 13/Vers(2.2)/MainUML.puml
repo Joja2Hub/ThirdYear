@@ -1,0 +1,83 @@
+@startuml
+
+class Shapes
+{
+    -=x1
+    -=y1
+    --
+    =square()
+    =perimeter()
+    =move()
+    =fill()
+    =compare()
+    =is_intersect()
+    =is_include()
+}
+
+class Rhombus
+{
+    -x1
+    -y1
+    -x2
+    -y2
+    -x3
+    -y3
+    -x4
+    -y4
+    -name
+    -color
+    -s_list
+    --
+    square()
+    perimeter()
+    move()
+    fill()
+}
+
+class Quadrilateral
+{
+    -x1
+    -y1
+    -x2
+    -y2
+    -x3
+    -y3
+    -x4
+    -y4
+    -name
+    -color
+    -s_list
+    --
+    square()
+    perimeter()
+    move()
+    fill()
+}
+
+class RegularPentagon
+{
+    -x1
+    -y1
+    -x2
+    -y2
+    -x3
+    -y3
+    -x4
+    -y4
+    -x5
+    -y5
+    -name
+    -color
+    -s_list
+    --
+    square()
+    perimeter()
+    move()
+    fill()
+}
+
+Rhombus -> Shapes
+Quadrilateral -> Shapes
+RegularPentagon -> Shapes
+
+@enduml
