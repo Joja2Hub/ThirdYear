@@ -1,0 +1,83 @@
+
+from OpenGL.GL import *
+from OpenGL.GLUT import *
+from OpenGL.GLU import *
+
+##Источник света находится сверху и справа. 2 Вращающихся зеркальных тела по нажатию на пробел меняют цвет и становятся диффузионными.
+
+
+import pygame
+from pygame.locals import *
+from OpenGL.GL import *
+from OpenGL.GLUT import *
+from OpenGL.GLU import *
+
+# Инициализация Pygame
+pygame.init()
+display = (800, 600)
+pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
+
+# Настройка освещения
+glLightfv(GL_LIGHT0, GL_POSITION, (1000, 1000, 0, 0))
+glEnable(GL_LIGHT0)
+glEnable(GL_LIGHTING)
+glEnable(GL_COLOR_MATERIAL)
+glEnable(GL_DEPTH_TEST)
+
+# Начальное положение камеры
+gluPerspective(45, (display[0] / display[1]), 0.1, 50.0)
+glTranslatef(0.0, 0.0, -5)
+
+# Функция для создания куба
+def draw_cube():
+    glutInit()
+    glutSolidCube(1)
+
+# Переменные для управления цветом и преобразования кубов
+color_toggle = False
+rotation_angle1 = 0
+rotation_angle2 = 0
+
+# Основной цикл отрисовки
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            quit()
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            color_toggle = not color_toggle
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+
+    # Рисуем первый куб
+    glPushMatrix()
+    glTranslatef(-1, 0, 0)
+    glRotatef(rotation_angle1, 1, 1, 1)
+    if color_toggle:
+        glColor3f(0.2, 0.7, 0.3)  # Задаем новый цвет для куба
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, (0.2, 0.7, 0.3, 1.0))  # Задаем диффузный цвет
+    else:
+        glColor3f(0.8, 0.1, 0.3)
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, (0.8, 0.1, 0.3, 1.0))
+    draw_cube()
+    glPopMatrix()
+
+    # Рисуем второй куб
+    glPushMatrix()
+    glTranslatef(1, 0, 0)
+    glRotatef(rotation_angle2, 1, -1, -1)
+    if color_toggle:
+        glColor3f(0.5, 0.4, 0.9)
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, (0.5, 0.4, 0.9, 1.0))
+    else:
+        glColor3f(0.1, 0.6, 0.4)
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, (0.1, 0.6, 0.4, 1.0))
+    draw_cube()
+    glPopMatrix()
+
+    pygame.display.flip()
+    pygame.time.wait(10)
+    rotation_angle1 += 1
+    rotation_angle2 += 1
+
+
