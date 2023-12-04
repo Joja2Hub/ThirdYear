@@ -88,5 +88,30 @@ sales_data = [
 cursor.executemany('INSERT INTO SalesLog (client_id, tour_id, price) VALUES (?, ?, ?)', sales_data)
 
 # Сохранение изменений и закрытие соединения
+
+#Обновление:
+cursor.execute("UPDATE Tours SET price=1200 WHERE tour_id=1")
+
+cursor.execute("UPDATE Clients SET age=40 WHERE client_id=5")
+
+cursor.execute("UPDATE Countries SET name='Новая страна' WHERE country_id=3")
+#Удаление данных:
+
+cursor.execute("DELETE FROM Tours WHERE tour_id=2")
+
+cursor.execute("DELETE FROM Clients WHERE client_id=8")
+
+cursor.execute("DELETE FROM Countries WHERE country_id=6")
+
+cursor.execute("DROP TABLE ")
+#Добавление данных:
+
+
+cursor.execute("INSERT INTO Tours (name, price) VALUES ('Тур 11', 1500)")
+
+cursor.execute("INSERT INTO Clients (first_name, last_name, age) VALUES ('Андрей', 'Ковалев', 33)")
+
+cursor.execute("INSERT INTO Countries (name) VALUES ('Страна 11')")
+
 conn.commit()
 conn.close()
