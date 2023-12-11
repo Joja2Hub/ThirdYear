@@ -45,6 +45,8 @@ while True:
             pygame.quit()
             quit()
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_ONE, GL_ONE)
             color_toggle = not color_toggle
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -52,6 +54,7 @@ while True:
     # Рисуем первый куб
     glPushMatrix()
     glTranslatef(-1, 0, 0)
+
     glRotatef(rotation_angle1, 1, 1, 1)
     if color_toggle:
         glColor3f(0.2, 0.7, 0.3)  # Задаем новый цвет для куба
