@@ -1,0 +1,151 @@
+................1 Интерполяция...................
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+def lagrange_interpolation(nodes, values, x):
+    result = 0
+    n = len(nodes)
+
+    for i in range(n):
+        term = values[i]
+
+        for j in range(n):
+            if j != i:
+                term *= (x - nodes[j]) / (nodes[i] - nodes[j])
+
+        result += term
+
+    return result
+
+
+def f(x):
+    return 1 / (1 + 25 * x ** 2)
+
+
+# Задаем интервал и количество точек для построения графика
+x = np.linspace(-1, 1, 100)
+f_x = f(x)
+
+# Различные значения n для интерполяции
+n_values = [5, 10, 15]
+
+# График исходной функции
+plt.figure(figsize=(10, 6))
+plt.plot(x, f_x, label='f(x)')
+plt.legend()
+plt.show()
+
+# Интерполяционные полиномы Лагранжа с равноотстоящими узлами
+plt.subplot(2, 1, 1)
+for n in n_values:
+    nodes = np.linspace(-1, 1, n)
+    values = f(nodes)
+    lagrange_values = [lagrange_interpolation(nodes, values, xi) for xi in x]
+    plt.plot(x, lagrange_values, label=f'n={n}')
+
+plt.title('Равноотстоящие узлы')
+plt.legend()
+
+# Интерполяционные полиномы Лагранжа с Чебышевскими узлами x_k = cos((2k - 1)pi/(2n)), где k = 1,2,...,n
+plt.subplot(2, 1, 2)
+for n in n_values:
+    nodes = np.cos((2 * np.arange(1, n + 1) - 1) * np.pi / (2 * n))
+    values = f(nodes)
+    lagrange_values = [lagrange_interpolation(nodes, values, xi) for xi in x]
+    plt.plot(x, lagrange_values, label=f'n={n}')
+
+plt.title('Чебышевские узлы')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+
+# Вычисление отклонения интерполяции от исходной функции
+# разница между значениями интерполяционного полинома и истинными значениями функции в заданных точках
+# Чтобы исследовать отклонение интерполяционного полинома от исходной функции,
+# можно вычислить разницу между значениями интерполяции и значениями функции f(x) для каждого значения x на заданном отрезке.
+
+deviations = []
+for n in n_values:
+    nodes = np.linspace(-1, 1, n)
+    values = f(nodes)
+    lagrange_values = [lagrange_interpolation(nodes, values, xi) for xi in x]
+    deviation = np.abs(lagrange_values - f_x)
+    deviations.append(deviation)
+
+# График отклонений
+plt.figure(figsize=(10, 6))
+for i in range(len(n_values)):
+    plt.plot(x, deviations[i], label=f'n={n_values[i]}')
+
+plt.title('Отклонение ИП от исходной функции')
+plt.legend()
+plt.show()
+
+
+
+.....................Сплайны..........................
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.interpolate import CubicSpline
+
+# Функция f(x)
+def f(x):
+    return 1 / (1 + 25 * x**2)
+
+# Задание отрезка и количества точек
+x = np.linspace(-1, 1, 100)
+n_values = [5, 10, 15, 20]
+
+# Построение графиков
+fi, ax = plt.subplots()
+
+# График функции f(x)
+ax.plot(x, f(x), label='f(x)')
+
+# Графики кубического сплайна для различных значений n
+for n in n_values:
+    # Равномерное разбиение отрезка [-1, 1] на n точек
+    x_values = np.linspace(-1, 1, n)
+    y_values = f(x_values)
+
+    # Вычисление кубического сплайна
+    cs = CubicSpline(x_values, y_values)
+
+    # Построение графика сплайна
+    ax.plot(x, cs(x), label=f'n = {n}')
+
+ax.legend()
+plt.show()
+
+
+#Построение кубического сплайна для заданной таблицы и проверка интерполяции в узловых точках:
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.interpolate import CubicSpline
+
+# Исходные данные
+x_values = np.array([2, 3, 5, 7])
+y_values = np.array([4, -2, 6, -3])
+
+# Построение графика кубического сплайна
+x = np.linspace(2, 7, 100)
+cs = CubicSpline(x_values, y_values)
+y = cs(x)
+
+# Построение графика и отображение узловых точек
+plt.plot(x, y, label='Кубический сплайн')
+plt.scatter(x_values, y_values, color='red', label='Узловые точки')
+plt.legend()
+plt.show()
+
+# Проверка интерполяции в узловых точках
+y_interpolated = cs(x_values)
+print('Значения кубического сплайна в узловых точках:')
+for i in range(len(x_values)):
+    print(f'f({x_values[i]}) = {y_interpolated[i]}')
+
